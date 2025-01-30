@@ -195,7 +195,7 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 
 また、マルウェアを検知するだけでなく、ブロックすることもできるようになりました。
 それを確認するには：
-* **Policies > Threat Detection > Runtime Policies**の**Malware**セクションに移動し、**Prevent Malware (security-playground-restricted-nomalware)**ポリシーを確認してください。他のNamespaceのように単にマルウェアを検知するだけではなく、ワークロードが**security-playground-restricted-nomalware**ネームスペースにある場合は**ブロック**（Prevent Malware）することに注目してください。
+* **Policies > Threat Detection > Runtime Policies**の**Malware**セクションに移動し、**Prevent Malware (security-playground-restricted-nomalware)** ポリシーを確認してください。他のNamespaceのように単にマルウェアを検知するだけではなく、ワークロードが**security-playground-restricted-nomalware**ネームスペースにある場合は**ブロック**（Prevent Malware）することに注目してください。
 * ![](instruction-images/prevent_malware_policy.png)
 * `./example-curls-restricted-nomalware.sh`を実行します。同じcurlを実行しますが、Sysdigがマルウェアを検知するだけでなくマルウェアを防止しています。ただし、Container Driftはブロックしていません。
     1. Sysdig UI の Insights で結果のイベントを見ると、マルウェアが検知されただけでなく、**実行を阻止**されたことがわかります。
