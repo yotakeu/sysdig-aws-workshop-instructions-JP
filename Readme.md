@@ -82,7 +82,7 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
         1. security-playground PodからNodeのAWS EC2 Instance Metadataエンドポイントに対して**curl**コマンドを実行する。
         1. 最後に、xmrig クリプトマイナーを実行する。
     1. 次に、`./example-curls.sh`と入力してスクリプトを実行し、攻撃者の視点から返されるすべての出力を確認してください。
-    1. 次に、Sysdig UIタブに戻り、ブラウザのタブを更新します。
+    1. 次に、Sysdig UIの **Threats > Activity > Kubernetes** 画面に戻り、ブラウザのタブを更新します。
         1. どのクラスタ、ネームスペース、Pod からランタイムイベントが発生しているかを示す円形の視覚化/ヒートマップが左側に表示されます。
         1. また、右側の **Summary** タブにはそれらのイベントのサマリーが、**Events** タブにはそれらのイベントの完全なタイムラインが表示されます。
         1. ![](instruction-images/insights2.png)
