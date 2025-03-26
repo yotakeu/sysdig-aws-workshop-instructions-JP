@@ -28,9 +28,20 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
     1. ![](instruction-images/instances2.png)
 1. **Session Manager**タブを選択し、**Connect**ボタンをクリックします。
     1. ![](instruction-images/connect.png)
-1. ターミナルウィンドウが開いたら、`sudo bash` と入力してから、`cd /root` と入力します。
-    1. **注意:** セッションマネージャーセッション（ターミナルウィンドウ）を閉じて再度開くと、rootユーザーとそのホームディレクトリに戻るために、これら2つのコマンドを再度実行する必要があります。
-1. `kubectl get pods -A`と入力すると、EKSクラスタ内の実行中のPodの一覧が表示されます。
+1. ターミナルウィンドウが開いたら、
+   ```
+   sudo bash
+   ```
+   と入力してから、
+   ```
+   cd /root
+   ```
+   と入力します。
+1. **注意:** セッションマネージャーセッション（ターミナルウィンドウ）を閉じて再度開くと、rootユーザーとそのホームディレクトリに戻るために、これら2つのコマンドを再度実行する必要があります。
+1. 以下コマンドを入力すると、EKSクラスタ内の実行中のPodの一覧が表示されます。
+   ```
+   kubectl get pods -A
+   ```
 
 > **注意:** ワークショップを通してGitHub上のサンプルファイルをいくつか紹介しますが、実行に必要なものはすべてジャンプボックスの/rootにあらかじめインストールされています。GitHubから何かをコピー＆ペーストしたり、**git clone**したりする必要はありません。
 
@@ -70,7 +81,11 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
         1. これは、深刻なリモートコード実行(RCE)の脆弱性をシミュレートしています。
             1. このアプリを使って、脆弱性が悪用された時に何を検知するかをテストすることができます。
     1. ジャンプボックスのセッションマネージャ端末のブラウザタブに戻ってください。
-    1. security-playground サービスに対して実行するいくつかの **curl** コマンド例を含むスクリプトを見るために、`cat ./example-curls.sh` と入力してください。このスクリプトは以下を実行します：
+    1. security-playground サービスに対して実行するいくつかの **curl** コマンド例を含むスクリプトを見るために、
+       ```
+       cat ./example-curls.sh
+       ```
+       と入力してください。このスクリプトは以下を実行します：
         1. 機密パス **/etc/shadow** の読み取り。
         1. ファイルを **/bin** に書き込み、**chmod +x** して実行する。
         1. **apt**から**nmap**をインストールし、ネットワークスキャンを実行する。
@@ -81,7 +96,11 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
         1. KubernetesのCLIである**kubectl**を使って、別の悪意のあるワークロードを起動する（security-playgroundのために過剰な権限でプロビジョニングされたKubernetesのServiceAccountを悪用する）。
         1. security-playground PodからNodeのAWS EC2 Instance Metadataエンドポイントに対して**curl**コマンドを実行する。
         1. 最後に、xmrig クリプトマイナーを実行する。
-    1. 次に、`./example-curls.sh`と入力してスクリプトを実行し、攻撃者の視点から返されるすべての出力を確認してください。
+    1. 次に、
+       ```
+       ./example-curls.sh
+       ```
+       と入力してスクリプトを実行し、攻撃者の視点から返されるすべての出力を確認してください。
     1. 次に、Sysdig UIの **Threats > Activity > Kubernetes** 画面に戻り、ブラウザのタブを更新します。
         1. どのクラスタ、ネームスペース、Pod からランタイムイベントが発生しているかを示す円形の視覚化/ヒートマップが左側に表示されます。
         1. また、右側の **Summary** タブにはそれらのイベントのサマリーが、**Events** タブにはそれらのイベントの完全なタイムラインが表示されます。
@@ -131,8 +150,12 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 1. 攻撃者は、実行時に**nmap**や暗号マイナーの**xmrig**のような新しい実行可能ファイルをコンテナに追加して実行することができました。
 1. 攻撃者はインターネットからこれらのものをダウンロードすることができました（このPodはそのEgressを介してインターネット上のあらゆる場所に到達することができたため）。
 1. 私たちのサービスの ServiceAccount は過剰にプロビジョニングされており、K8s API を呼び出して他のワークロードを起動することができました（本来これは必要ありません）。
-    1. `kubectl get rolebindings -o yaml -n security-playground && kubectl get roles -o yaml -n security-playground` を実行して、デフォルトの ServiceAccount に以下のルール/パーミッションでバインドされた Role があることを確認します：
-        ```
+   ```
+   kubectl get rolebindings -o yaml -n security-playground && kubectl get roles -o yaml -n security-playground
+   ```
+   を実行して、デフォルトの ServiceAccount に以下のルール/パーミッションでバインドされた Role があることを確認します：
+
+   ```
         rules:
         - apiGroups:
             - '*'
@@ -140,7 +163,7 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
             - '*'
             verbs:
             - '*'
-        ```
+   ```
     1. 上記はClusterRoleではなくRoleでした - つまり、できることはこのNamespace内に限られるということです。しかし、Namespaceの中で完全な管理者として与えられるダメージはたくさんあります！
 1. 攻撃者はPod内から、EKSノードだけを対象としたEC2メタデータのエンドポイント（169.254.0.0/16）に到達できました。
 
@@ -174,11 +197,19 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 1. 上記のようにNetworkPolicyでPodの169.254.0.0/16へのEgressアクセスをブロックするか、AWSのドキュメントに記載されているようにIDMSv2で最大1ホップに制限するか、どちらかです - https://docs.aws.amazon.com/whitepapers/latest/security-practices-multi-tenant-saas-applications-eks/restrict-the-use-of-host-networking-and-block-access-to-instance-metadata-service.html
 
 ### 実際に修正する
-私たちは、**この攻撃はなぜ成功したのでしょうか?** の1から3が修正されたワークロードの例として **security-playground-restricted** も実行しています。このワークロードは新しいnon-root Dockerfileで構築され、PSAがrestrictedのセキュリティ標準を強制するsecurity-playground-restrictedネームスペースで実行されています（つまり、rootとして実行したり、コンテナのエスケープを可能にするhostPIDや特権SecurityContextなどのオプションを持つことはできません）。`kubectl describe namespace security-playground-restricted` コマンドを実行してPSAを実現するラベルを確認しましょう（**pod-security**ラベルに注目してください）。
+私たちは、**この攻撃はなぜ成功したのでしょうか?** の1から3が修正されたワークロードの例として **security-playground-restricted** も実行しています。このワークロードは新しいnon-root Dockerfileで構築され、PSAがrestrictedのセキュリティ標準を強制するsecurity-playground-restrictedネームスペースで実行されています（つまり、rootとして実行したり、コンテナのエスケープを可能にするhostPIDや特権SecurityContextなどのオプションを持つことはできません）。
+```
+kubectl describe namespace security-playground-restricted
+```
+コマンドを実行してPSAを実現するラベルを確認しましょう（**pod-security**ラベルに注目してください）。
 
 オリジナルのKubernetes PodSpec [こちら](https://github.com/jasonumiker-sysdig/example-scenarios/blob/main/k8s-manifests/04-security-playground-deployment.yaml) と、restrictedのPSAをパスするために必要なすべての変更を加えたアップデート版 [こちら](https://github.com/jasonumiker-sysdig/example-scenarios/blob/main/k8s-manifests/07-security-playground-restricted-deployment.yaml) を確認することができます。
 
-1から3が修正された状態で、私たちの攻撃がどうなるかを確認するには、`./example-curls-restricted.sh`を実行してください（前回とは異なるsecurity-playground-restrictedのポート/サービスを宛先とするだけで、内容は前回のファイルと同じです）。以下の点に注目してください：
+1から3が修正された状態で、私たちの攻撃がどうなるかを確認するには、
+```
+./example-curls-restricted.sh
+```
+を実行してください（前回とは異なるsecurity-playground-restrictedのポート/サービスを宛先とするだけで、内容は前回のファイルと同じです）。以下の点に注目してください：
 * コンテナ内でroot権限を必要とするもの（/etc/shadowの読み込み、/binへの書き込み、aptからのパッケージのインストールなど）は、Pythonアプリがそれを実行する権限を持っていないため、**500 Internal Server Error** で失敗します。
 * **root**と**hostPid**と**privileged**がないので、コンテナをエスケープできませんでした。
 * 唯一うまくいったのは、ノードのEC2メタデータエンドポイントを叩くことと、xmrig crypto minerをユーザーのホームディレクトリにダウンロード/実行することでした。
@@ -186,7 +217,10 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 また、SysdigでContainer Driftの防止（コンテナ稼働時に追加された新しい実行可能ファイルを実行できないようにする）を有効にすると、EC2インスタンスのメタデータへのアクセス以外はすべてブロックされます。この設定を確認するには：
 * **Policies > Threat Detection > Runtime Policies** に移動し、**security-playground-restricted-nodrift**ポリシーを確認します。他のネームスペースのようにドリフトを検知するだけではなく、ワークロードが**security-playground-restricted-nodrift**ネームスペースにある場合には**ブロック**（Prevent Drift）することに注目してください。
 * ![](instruction-images/drift_prevent_policy.png)
-* `./example-curls-restricted-nodrift.sh` を実行します。同じcurlを実行しますが、直前の例のように制限されているワークロードに対して実行し、かつContainer Driftの防止（検知だけでなく）が有効になっています。
+  ```
+  ./example-curls-restricted-nodrift.sh
+  ```
+  を実行します。同じcurlを実行しますが、直前の例のように制限されているワークロードに対して実行し、かつContainer Driftの防止（検知だけでなく）が有効になっています。
     1. Sysdig UI の Insights で結果のイベントを見ると、今回は Drift が検知されただけでなく、**防止**されたことがわかります。
     1. ![](instruction-images/driftprevented.png)
 
@@ -194,7 +228,10 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 それを確認するには：
 * **Policies > Threat Detection > Runtime Policies**の**Malware**セクションに移動し、**Prevent Malware (security-playground-restricted-nomalware)** ポリシーを確認してください。他のNamespaceのように単にマルウェアを検知するだけではなく、ワークロードが**security-playground-restricted-nomalware**ネームスペースにある場合は**ブロック**（Prevent Malware）することに注目してください。
 * ![](instruction-images/prevent_malware_policy.png)
-* `./example-curls-restricted-nomalware.sh`を実行します。同じcurlを実行しますが、Sysdigがマルウェアを検知するだけでなくマルウェアを防止しています。ただし、Container Driftはブロックしていません。
+  ```
+  ./example-curls-restricted-nomalware.sh
+  ```
+  を実行します。同じcurlを実行しますが、Sysdigがマルウェアを検知するだけでなくマルウェアを防止しています。ただし、Container Driftはブロックしていません。
     1. Sysdig UI の Insights で結果のイベントを見ると、マルウェアが検知されただけでなく、**実行を阻止**されたことがわかります。
     1. ![](instruction-images/malware.png)
 
@@ -202,13 +239,18 @@ Sysdig AgentはどのLinuxマシンにもインストールすることができ
 
 最後に、security-playground-restricted を変更して、security-playground のようにセキュリティを弱体化させるテストをしてみましょう。以下のコマンドを実行して、安全でないコンテナイメージとPodSpecをそのネームスペースにデプロイしてみてください。
 
-`kubectl apply -f security-playground-test.yaml`
+```
+kubectl apply -f security-playground-test.yaml
+```
 
 **security-playground-restricted**ネームスペースではPSAで制限されているため許可されないと警告されていることに注目してください。
 ![](instruction-images/psa.png)
 
 また、上記コマンドでDeploymentにPodを作成させていますが、そのDeployment（実際にはそのReplicaSet）はPodを起動できません。
-`kubectl events security-playground -n security-playground-restricted` を実行すると、Pod作成の失敗を確認できます。
+```
+kubectl events security-playground -n security-playground-restricted
+```
+を実行すると、Pod作成の失敗を確認できます。
 
 このような事象に遭遇した場合に、なぜPodが起動しないのかと頭を悩ませるよりも、実行時にこのようなことが起こる（そしてPodSpecを修正する必要がある）ことを、パイプラインのもっと早い段階で開発者に伝えておくべきです。
 
@@ -240,7 +282,9 @@ AWS EKSには、[IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.
 
 **security-playground**ネームスペースの**irsa**サービスアカウントには、**Action": "s3:*"** ポリシーが適用されています。以下のコマンドを実行すると、**irsa**サービスアカウントのAnnotationが表示され、バインドされたAWS IAMロールのARNを確認できます：
 
-`kubectl get serviceaccount irsa -n security-playground -o yaml`
+```
+kubectl get serviceaccount irsa -n security-playground -o yaml
+```
 
 IAM RoleのARNから辿ることで確認できますが、このIAM Roleは次のようなインラインポリシーを持ちます。よく見かける、s3サービス用のものです（実際には、バケット自体だけでなくコンテンツもカバーするために2つあります）。これは、単一のバケットResourceに適切にスコープされており、ないよりはましですが、なぜこのサービスのための "*" が悪い考えなのかがわかるでしょう。
 
@@ -286,7 +330,11 @@ IAM RoleのARNから辿ることで確認できますが、このIAM Roleは次�
 ```
 
 ### Exploit
-実行時にAWS CLIをコンテナにインストールし、いくつかのコマンドを実行すると、PodにIRSAロールが割り当てられているかどうかがわかります。/rootに**example-curls-bucket-public.sh**ファイルがあるので、`cat example-curls-bucket-public.sh`で内容を確認して、`./example-curls-bucket-public.sh`を実行します。
+実行時にAWS CLIをコンテナにインストールし、いくつかのコマンドを実行すると、PodにIRSAロールが割り当てられているかどうかがわかります。/rootに**example-curls-bucket-public.sh**ファイルがあるので、`cat example-curls-bucket-public.sh`で内容を確認して、
+```
+./example-curls-bucket-public.sh
+```
+を実行します。
 
 AWS CLIのインストールは成功しましたが、S3の変更はアクセス権がないので失敗します（エラーは表示されません）。AWSのS3コンソールで自身のAttendee番号のバケットをクリックしてPermissionsタブを見ると、パブリックに変更されていません。
 <img src=instruction-images/bucketpublic1.png width=50%>
@@ -346,7 +394,9 @@ Sysdig のランタイム脆弱性スキャンを確認するには、以下の�
 
 すでにあなたのジャンプボックスにはインストールしてあります。以下のコマンドを実行することで、Log4Jを含むイメージである**logstash:7.16.1**のスキャンを実行できます：
 
-`./sysdig-cli-scanner -a app.au1.sysdig.com logstash:7.16.1`
+```
+./sysdig-cli-scanner -a app.au1.sysdig.com logstash:7.16.1
+```
 
 パイプライン・ステージのビルド・ログに出力されるだけでなく、出力に記載されているリンクをたどるか、UIの**Vulnerabilities > Findings > Pipeline**に進むことで、Sysdig SaaSのUIで結果を調べることもできます。この結果にはIn Useなどのランタイムコンテキストが欠落していることに注意してください（パイプラインでスキャンされたため、ランタイムコンテキストをまだ知らないため）。
 
