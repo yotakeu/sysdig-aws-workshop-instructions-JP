@@ -345,7 +345,15 @@ cat example-curls-bucket-public.sh
 AWS CLIのインストールは成功しましたが、S3の変更はアクセス権がないので失敗します（エラーは表示されません）。AWSのS3コンソールで自身のAttendee番号のバケットをクリックしてPermissionsタブを見ると、パブリックに変更されていません。
 <img src=instruction-images/bucketpublic1.png width=50%>
 
-security-playground Deploymentのマニフェストを更新し、これまで使用していた**default**のサービスアカウントではなく、この**irsa**サービスアカウントを使用するようにしましょう。この変更を適用するには、`kubectl apply -f security-playground-irsa.yaml`を実行します。ここで、`./example-curls-bucket-public.sh`を再実行すると、今度はうまくいきます！
+security-playground Deploymentのマニフェストを更新し、これまで使用していた**default**のサービスアカウントではなく、この**irsa**サービスアカウントを使用するようにしましょう。この変更を適用するには、
+```
+kubectl apply -f security-playground-irsa.yaml
+```
+を実行します。ここで、
+```
+./example-curls-bucket-public.sh
+```
+を再実行すると、今度はうまくいきます！
 
 S3コンソールでこのバケットを見ると、今度はバケット（とそのすべてのコンテンツ）がパブリックになっていることがわかるでしょう（そして、攻撃者はS3のパブリックAPIからすぐにダウンロードすることができます）！
 <img src=instruction-images/bucketpublic2.png width=50%>
