@@ -332,7 +332,11 @@ IAM RoleのARNから辿ることで確認できますが、このIAM Roleは次�
 ```
 
 ### Exploit
-実行時にAWS CLIをコンテナにインストールし、いくつかのコマンドを実行すると、PodにIRSAロールが割り当てられているかどうかがわかります。/rootに**example-curls-bucket-public.sh**ファイルがあるので、`cat example-curls-bucket-public.sh`で内容を確認して、
+実行時にAWS CLIをコンテナにインストールし、いくつかのコマンドを実行すると、PodにIRSAロールが割り当てられているかどうかがわかります。/rootに**example-curls-bucket-public.sh**ファイルがあるので、
+```
+cat example-curls-bucket-public.sh
+```
+で内容を確認して、
 ```
 ./example-curls-bucket-public.sh
 ```
