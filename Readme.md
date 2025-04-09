@@ -51,7 +51,7 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
 
 1. ウェブブラウザを開き、https://app.au1.sysdig.com/secure/ にアクセスします。
 1. 自身に提供されたメールアドレスとパスワードを入力し、**Log in**ボタンをクリックします。
-1. Sysdig エクスペリエンスのカスタマイズ画面が表示されたら、右下の **Get into Sysdig** ボタンをクリックし、**Home** 画面に移動します。
+1. （オプション）Sysdig エクスペリエンスのカスタマイズ画面が表示された場合は、右下の **Get into Sysdig** ボタンをクリックし、**Home** 画面に移動します。
     1. ![](instruction-images/sysdigexperience.png)
 
 ## モジュール 1 - ランタイム脅威の検知と防御 (Workload/Kubernetes)
