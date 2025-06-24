@@ -72,8 +72,8 @@ Sysdigのハンズオンワークショップへようこそ。このワーク�
 
 ### Sysdig 内でイベントを生成するための攻撃のシミュレーション
 
-1. Sysdig UI で左側の **Threats > Activity > Kubernetes** をクリックします。
-    1. すでにいくつかのイベントが検知されているかもしれません。何も疑わしいアクティビティを検知していない場合は、**Welcome to Insights** プレースホルダ画面が表示されます。
+1. Sysdig UI で左側の **Threats > Activity > Kubernetes** をクリックします。画面下部のタイムスケールから **3H** を選択します。
+    1. すでにいくつかのイベントが検知されているかもしれません。何も疑わしいアクティビティを検知していない場合は、空白画面が表示されます。
 1. それでは、イベントを生成してみましょう！
     1. 次のリンクをクリックして、クラスタ上のsecurity-playgroundサービスの、安全ではないコードを開いて中身を確認してください - https://github.com/jasonumiker-sysdig/example-scenarios/blob/main/docker-build-security-playground/app.py
         1. このPythonアプリは、単純な **curl** コマンドに応答して、ファイルシステム上の任意のファイルの内容を返したり、ファイルシステム に任意のファイルを書き込んだり、ファイルシステム上の任意のファイルを実行したりする**極めて**安全ではないREST APIを提供します。
